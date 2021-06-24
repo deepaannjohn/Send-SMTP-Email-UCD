@@ -16,3 +16,16 @@ notifications:
     on_success: change
     on_failure: change
   email: false
+before_deploy:
+     # Set up git user name and tag this commit
+     - git config --local user.name "deepaannjohn"
+     - git config --local user.email "deepa.ann.john1@gmail.com"
+     - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
+     - git tag $TRAVIS_TAG
+deploy:
+  provider: releases
+  api_key: "GITHUB OAUTH TOKEN"
+  file: *.zip
+  skip_cleanup: true
+  on:
+    tags: true
